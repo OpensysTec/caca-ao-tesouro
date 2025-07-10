@@ -10,18 +10,18 @@
       padding: 0;
       background: #2575FF;
       font-family: 'Segoe UI', sans-serif;
-      height: 100vh;
+      height: 100dvh;
+      overflow: hidden;
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
-      overflow: hidden; /* evitar rolagem */
+      justify-content: center;
+      color: white;
     }
 
     h1 {
-      font-size: 2.5em;
-      margin-bottom: 30px;
-      color: white;
+      font-size: 1.6em;
+      margin: 5px 0 15px;
       text-shadow: 0 0 10px #4ade80;
       user-select: none;
     }
@@ -29,26 +29,29 @@
     .painel {
       background: #0e2e66;
       border-radius: 30px;
-      padding: 40px 20px;
-      width: 90vw;
-      max-width: 280px;
+      padding: 25px 15px;
+      width: 85vw;
+      max-width: 300px;
+      max-height: 430px;
       box-shadow: 0 0 25px #4ade80cc;
       display: flex;
       flex-direction: column;
       align-items: center;
+      overflow: hidden;
     }
 
     .logo {
-      width: 100px;
-      margin-bottom: 20px;
+      width: 90px;
+      margin-bottom: 15px;
+      object-fit: contain;
     }
 
     .display {
-      font-size: 2em;
-      letter-spacing: 12px;
+      font-size: 1.7em;
+      letter-spacing: 10px;
       background: #1a1a1a;
-      padding: 10px;
-      margin-bottom: 30px;
+      padding: 10px 0;
+      margin-bottom: 25px;
       border-radius: 10px;
       color: #4ade80;
       width: 100%;
@@ -60,9 +63,9 @@
     .teclado {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 15px;
-      margin-bottom: 20px;
+      gap: 12px;
       width: 100%;
+      margin-bottom: 20px;
     }
 
     .tecla {
@@ -71,11 +74,11 @@
       background: #1a1a1a;
       border: 2px solid #4ade80;
       border-radius: 50%;
-      font-size: 1.4em;
+      font-size: 1.3em;
       color: #4ade80;
       cursor: pointer;
       box-shadow: 0 0 10px #4ade8099;
-      transition: 0.2s;
+      transition: background 0.2s, box-shadow 0.2s, color 0.2s;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -103,18 +106,41 @@
     }
 
     .hora {
-      font-size: 0.9em;
+      font-size: 0.85em;
       color: #ccc;
       display: none;
       margin-top: 5px;
       user-select: none;
     }
 
-    @media (max-width: 350px) {
+    /* Ajustes para telas pequenas */
+    @media (max-width: 400px) {
+      .painel {
+        max-width: 260px;
+        max-height: 380px;
+        padding: 20px 12px;
+      }
+
       .tecla {
         width: 50px;
         height: 50px;
-        font-size: 1.2em;
+        font-size: 1.1em;
+      }
+
+      .display {
+        font-size: 1.4em;
+        letter-spacing: 8px;
+        margin-bottom: 20px;
+      }
+
+      h1 {
+        font-size: 1.3em;
+        margin-bottom: 12px;
+      }
+
+      .logo {
+        width: 75px;
+        margin-bottom: 12px;
       }
     }
   </style>
@@ -124,7 +150,7 @@
   <h1>Fechadura Inteligente</h1>
 
   <div class="painel">
-    <img src="logo-opensys.png" alt="OpenSys Logo" class="logo">
+    <img src="logo-opensys.png" alt="OpenSys Logo" class="logo" />
     <div class="display" id="display">____</div>
 
     <div class="teclado">
@@ -147,7 +173,7 @@
   </div>
 
   <script>
-    const senhaCodificada = "NDI3MQ=="; // senha 4271
+    const senhaCodificada = "NDI3MQ=="; // senha 4271 base64
     const senhaCorreta = atob(senhaCodificada);
     let senhaDigitada = "";
 
@@ -161,8 +187,8 @@
 
     function sucesso() {
       mensagem.innerHTML = "✅ Acesso Liberado! Parabéns!!!";
-      mensagem.style.display = "block";
       mensagem.style.color = "#4ade80";
+      mensagem.style.display = "block";
 
       const agora = new Date();
       hora.innerText = `${agora.toLocaleDateString()} - ${agora.toLocaleTimeString()}`;
@@ -178,8 +204,8 @@
 
     function erro() {
       mensagem.innerHTML = "❌ Senha incorreta.";
-      mensagem.style.display = "block";
       mensagem.style.color = "#f87171";
+      mensagem.style.display = "block";
 
       setTimeout(() => {
         senhaDigitada = "";
