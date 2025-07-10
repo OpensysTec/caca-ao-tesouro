@@ -1,41 +1,37 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Fechadura Intelbras Style - OpenSys</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Fechadura Inteligente - OpenSys</title>
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
+    html, body {
+      margin: 0;
+      padding: 0;
       background: #2575FF;
-      color: white;
       font-family: 'Segoe UI', sans-serif;
+      height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      height: 100dvh;
-      margin: 0;
-      padding: 20px;
+      overflow: hidden; /* evitar rolagem */
     }
 
     h1 {
-      font-size: 2em;
-      margin-bottom: 20px;
+      font-size: 2.5em;
+      margin-bottom: 30px;
+      color: white;
       text-shadow: 0 0 10px #4ade80;
       user-select: none;
-      text-align: center;
     }
 
     .painel {
       background: #0e2e66;
       border-radius: 30px;
-      padding: 30px 15px;
-      max-width: 90vw;
-      width: 100%;
+      padding: 40px 20px;
+      width: 90vw;
+      max-width: 280px;
       box-shadow: 0 0 25px #4ade80cc;
       display: flex;
       flex-direction: column;
@@ -43,42 +39,47 @@
     }
 
     .logo {
-      width: 80px;
-      margin-bottom: 15px;
+      width: 100px;
+      margin-bottom: 20px;
     }
 
     .display {
-      font-size: 1.6em;
+      font-size: 2em;
       letter-spacing: 12px;
       background: #1a1a1a;
-      padding: 8px;
-      margin-bottom: 25px;
+      padding: 10px;
+      margin-bottom: 30px;
       border-radius: 10px;
       color: #4ade80;
       width: 100%;
       text-align: center;
       box-shadow: inset 0 0 10px #22c55e99;
+      user-select: none;
     }
 
     .teclado {
-      width: 100%;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin-bottom: 15px;
+      gap: 15px;
+      margin-bottom: 20px;
+      width: 100%;
     }
 
     .tecla {
-      width: 100%;
-      aspect-ratio: 1 / 1;
+      width: 60px;
+      height: 60px;
       background: #1a1a1a;
       border: 2px solid #4ade80;
       border-radius: 50%;
-      font-size: 1.2em;
+      font-size: 1.4em;
       color: #4ade80;
       cursor: pointer;
       box-shadow: 0 0 10px #4ade8099;
       transition: 0.2s;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      user-select: none;
     }
 
     .tecla:hover {
@@ -98,6 +99,7 @@
       text-align: center;
       display: none;
       margin-top: 10px;
+      user-select: none;
     }
 
     .hora {
@@ -105,6 +107,15 @@
       color: #ccc;
       display: none;
       margin-top: 5px;
+      user-select: none;
+    }
+
+    @media (max-width: 350px) {
+      .tecla {
+        width: 50px;
+        height: 50px;
+        font-size: 1.2em;
+      }
     }
   </style>
 </head>
@@ -149,7 +160,7 @@
     }
 
     function sucesso() {
-      mensagem.innerHTML = "✅ Acesso Liberado! Parabéns!!! ";
+      mensagem.innerHTML = "✅ Acesso Liberado! Parabéns!!!";
       mensagem.style.display = "block";
       mensagem.style.color = "#4ade80";
 
