@@ -17,7 +17,7 @@
       align-items: center;
       justify-content: center;
       color: white;
-      text-align: center; /* centraliza texto do body e h1 */
+      text-align: center;
     }
 
     h1 {
@@ -64,7 +64,7 @@
       text-align: center;
       box-shadow: inset 0 0 10px #22c55e99;
       user-select: none;
-      white-space: pre-wrap; /* para quebrar linha na mensagem de data/hora */
+      white-space: pre-wrap;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -108,7 +108,6 @@
       color: black;
     }
 
-    /* Ajustes para telas pequenas */
     @media (max-width: 400px) {
       .painel {
         max-width: 260px;
@@ -207,20 +206,22 @@
 
         if (valor === "←") {
           senhaDigitada = senhaDigitada.slice(0, -1);
+          atualizarDisplay();
         } else if (valor === "OK") {
           if (senhaDigitada.length === 4) {
-            senhaDigitada === senhaCorreta ? sucesso() : erro();
+            if (senhaDigitada === senhaCorreta) {
+              sucesso();
+            } else {
+              erro();
+            }
           } else {
             erro();
           }
         } else {
           if (senhaDigitada.length < 4) {
             senhaDigitada += valor;
+            atualizarDisplay();
           }
-        }
-
-        if (!senhaDigitada || senhaDigitada.length < 4) {
-          atualizarDisplay();
         }
       });
     });
