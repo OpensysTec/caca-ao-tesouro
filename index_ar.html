@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ar Condicionado Inteligente - OpenSys</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #2575FF;
+      font-family: 'Segoe UI', sans-serif;
+      height: 100dvh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    h1 {
+      font-size: 1.6em;
+      margin: 5px 0 20px;
+      color: white;
+      text-shadow: 0 0 10px #4ade80;
+      user-select: none;
+    }
+
+    .ar-container {
+      position: relative;
+      width: 240px;
+      height: 120px;
+      margin-bottom: 30px;
+    }
+
+    .ar-condicionado {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to bottom, #e0e0e0, #ccc);
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      position: relative;
+      border: 3px solid #999;
+    }
+
+    .grades {
+      position: absolute;
+      bottom: 20px;
+      left: 10px;
+      right: 10px;
+      height: 25px;
+      background: repeating-linear-gradient(
+        to right,
+        #444,
+        #444 3px,
+        transparent 3px,
+        transparent 6px
+      );
+      border-radius: 4px;
+    }
+
+    .display {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      width: 40px;
+      height: 25px;
+      background: #000;
+      color: lime;
+      font-size: 16px;
+      font-weight: bold;
+      text-align: center;
+      line-height: 25px;
+      border-radius: 4px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .power-led {
+      position: absolute;
+      top: 10px;
+      left: 15px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: red;
+      box-shadow: 0 0 5px rgba(0,0,0,0.6);
+      transition: background 0.3s;
+    }
+
+    .numero-display {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 28px;
+      font-weight: bold;
+      color: black;
+      user-select: none;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .numero-display.visivel {
+      opacity: 1;
+    }
+
+    .ondas-ar {
+      position: absolute;
+      bottom: -25px;
+      width: 100%;
+      display: flex;
+      justify-content: space-around;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .onda {
+      width: 6px;
+      height: 30px;
+      background: rgba(255, 255, 255, 0.7);
+      animation: sobe 1s infinite ease-in-out;
+    }
+
+    .onda:nth-child(2) { animation-delay: 0.2s; }
+    .onda:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes sobe {
+      0% { transform: translateY(0); opacity: 0.7; }
+      50% { transform: translateY(-10px); opacity: 1; }
+      100% { transform: translateY(0); opacity: 0.7; }
+    }
+
+    .celular {
+      width: 85vw;
+      max-width: 300px;
+      aspect-ratio: 9 / 18;
+      background: #1a1a1a;
+      border-radius: 40px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .camera {
+      width: 60px;
+      height: 8px;
+      background: #444;
+      border-radius: 5px;
+      margin-top: 10px;
+    }
+
+    .tela {
+      width: 90%;
+      flex: 1;
+      background: #0e2e66;
+      border-radius: 20px;
+      margin: 10px 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 15px;
+      box-shadow: inset 0 0 8px #00000066;
+    }
+
+    .logo-superior {
+      margin-bottom: 20px;
+    }
+
+    .logo-superior img {
+      max-height: 90px;
+      max-width: 100%;
+      object-fit: contain;
+    }
+
+    button.botao {
+      border: none;
+      padding: 10px 20px;
+      font-size: 1em;
+      border-radius: 40px;
+      cursor: pointer;
+      margin: 5px;
+    }
+
+    .ligar { background: #4ade80; }
+    .desligar { background: #f87171; }
+    .aumentar { background: #60a5fa; }
+    .diminuir { background: #facc15; }
+  </style>
+</head>
+<body>
+  <h1>Ar Condicionado Inteligente</h1>
+
+  <div class="ar-container">
+    <div class="ar-condicionado" id="ar">
+      <div class="power-led" id="powerLed"></div>
+      <div class="display" id="display">3</div>
+      <div class="grades"></div>
+      <div class="ondas-ar" id="ondas">
+        <div class="onda"></div>
+        <div class="onda"></div>
+        <div class="onda"></div>
+      </div>
+      <div class="numero-display" id="numeroDisplay">3</div>
+    </div>
+  </div>
+
+  <div class="celular">
+    <div class="camera"></div>
+    <div class="tela">
+      <div class="logo-superior">
+        <img src="logo-opensys.png" alt="Logo OpenSys" />
+      </div>
+      <button class="botao ligar" onclick="ligarAr()">Ligar</button>
+      <button class="botao aumentar" onclick="ajustarTemp(1)">Aumentar Temp</button>
+      <button class="botao diminuir" onclick="ajustarTemp(-1)">Diminuir Temp</button>
+    </div>
+  </div>
+
+  <script>
+    let ligado = false;
+    let temperatura = 3;
+
+    function ligarAr() {
+      ligado = !ligado;
+      const display = document.getElementById('display');
+      const ondas = document.getElementById('ondas');
+      const powerLed = document.getElementById('powerLed');
+      const numero = document.getElementById('numeroDisplay');
+
+      if (ligado) {
+        display.style.opacity = 1;
+        ondas.style.opacity = 1;
+        powerLed.style.background = 'limegreen';
+        numero.classList.add('visivel');
+      } else {
+        display.style.opacity = 0;
+        ondas.style.opacity = 0;
+        powerLed.style.background = 'red';
+        numero.classList.remove('visivel');
+      }
+    }
+
+    function ajustarTemp(valor) {
+      temperatura = Math.max(0, temperatura + valor);
+      document.getElementById('display').textContent = temperatura;
+    }
+  </script>
+
+</body>
+</html>
