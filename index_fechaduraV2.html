@@ -17,6 +17,7 @@
       align-items: center;
       justify-content: center;
       color: white;
+      text-align: center; /* centraliza texto do body e h1 */
     }
 
     h1 {
@@ -24,6 +25,10 @@
       margin: 5px 0 15px;
       text-shadow: 0 0 10px #4ade80;
       user-select: none;
+      width: 100%;
+      max-width: 300px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     .painel {
@@ -47,17 +52,23 @@
     }
 
     .display {
-      font-size: 1.7em;
-      letter-spacing: 10px;
+      font-size: 1.5em;
+      letter-spacing: 3px;
       background: #1a1a1a;
-      padding: 10px 0;
+      padding: 15px 10px;
       margin-bottom: 25px;
       border-radius: 10px;
       color: #4ade80;
       width: 100%;
+      min-height: 80px;
       text-align: center;
       box-shadow: inset 0 0 10px #22c55e99;
       user-select: none;
+      white-space: pre-wrap; /* para quebrar linha na mensagem de data/hora */
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
     }
 
     .teclado {
@@ -97,22 +108,6 @@
       color: black;
     }
 
-    .mensagem {
-      font-size: 1em;
-      text-align: center;
-      display: none;
-      margin-top: 10px;
-      user-select: none;
-    }
-
-    .hora {
-      font-size: 0.85em;
-      color: #ccc;
-      display: none;
-      margin-top: 5px;
-      user-select: none;
-    }
-
     /* Ajustes para telas pequenas */
     @media (max-width: 400px) {
       .painel {
@@ -128,9 +123,10 @@
       }
 
       .display {
-        font-size: 1.4em;
-        letter-spacing: 8px;
+        font-size: 1.3em;
+        letter-spacing: 2px;
         margin-bottom: 20px;
+        min-height: 70px;
       }
 
       h1 {
@@ -167,9 +163,6 @@
       <button class="tecla">0</button>
       <button class="tecla ok">OK</button>
     </div>
-
-    <div class="mensagem" id="mensagem"></div>
-    <div class="hora" id="hora"></div>
   </div>
 
   <script>
@@ -178,38 +171,32 @@
     let senhaDigitada = "";
 
     const display = document.getElementById("display");
-    const mensagem = document.getElementById("mensagem");
-    const hora = document.getElementById("hora");
 
-    function atualizarDisplay() {
-      display.innerText = senhaDigitada.padEnd(4, "_");
+    function atualizarDisplay(mensagem = null) {
+      if (mensagem) {
+        display.innerText = mensagem;
+      } else {
+        display.innerText = senhaDigitada.padEnd(4, "_");
+      }
     }
 
     function sucesso() {
-      mensagem.innerHTML = "✅ Acesso Liberado! Parabéns!!!";
-      mensagem.style.color = "#4ade80";
-      mensagem.style.display = "block";
-
       const agora = new Date();
-      hora.innerText = `${agora.toLocaleDateString()} - ${agora.toLocaleTimeString()}`;
-      hora.style.display = "block";
+      const dataHora = `${agora.toLocaleDateString()} - ${agora.toLocaleTimeString()}`;
+      const msg = `✅ Acesso Liberado!\n${dataHora}`;
+      atualizarDisplay(msg);
 
       setTimeout(() => {
         senhaDigitada = "";
-        mensagem.style.display = "none";
-        hora.style.display = "none";
         atualizarDisplay();
       }, 60000);
     }
 
     function erro() {
-      mensagem.innerHTML = "❌ Senha incorreta.";
-      mensagem.style.color = "#f87171";
-      mensagem.style.display = "block";
+      atualizarDisplay("❌ Senha incorreta.");
 
       setTimeout(() => {
         senhaDigitada = "";
-        mensagem.style.display = "none";
         atualizarDisplay();
       }, 3000);
     }
@@ -232,7 +219,9 @@
           }
         }
 
-        atualizarDisplay();
+        if (!senhaDigitada || senhaDigitada.length < 4) {
+          atualizarDisplay();
+        }
       });
     });
 
