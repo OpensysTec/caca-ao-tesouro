@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Caça ao Tesouro GPS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: linear-gradient(#005bea, #00c6fb);
+      color: white;
+      padding: 40px;
+    }
+    #status {
+      font-size: 1.5em;
+      margin-top: 40px;
+    }
+    #code {
+      font-size: 2em;
+      margin-top: 20px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>🧭 Caça ao Tesouro OpenSys</h1>
+  <p>Estamos localizando você... caminhe até o ponto secreto!</p>
+  <div id="status">⏳ Buscando localização...</div>
+  <div id="code">🎉 Parabéns! Você chegou! <br><strong>Código: #3</strong></div>
+
+  <script>
+    const destino = { lat: -11.0083636, lon: -39.3035802 }; // Seu ponto GPS
+    const raio = 40; // em metros
+
+    function getDistanciaEmMetros(lat1, lon1, lat2, lon2) {
+      const R = 6371e3;
+      const φ1 = lat1 * Math.PI/180;
+      const φ2 = lat2 * Math.PI/180;
+      const Δφ = (lat2-lat1) * Math.PI/180;
+      const Δλ = (lon2-lon1) * Math.PI/180;
+      const a = Math.sin(Δφ/2)**2 + Math.cos(φ1)*Math.cos(φ2)*Math.sin(Δλ/2)**2;
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+      return R * c;
+    }
+
+    function verificarLocalizacao(pos) {
+      const lat = pos.coords.latitude;
+      const lon = pos.coords.longitude;
+      const distancia = getDistanciaEmMetros(lat, lon, destino.lat, destino.lon);
+
+      const status = document.getElementById('status');
+      const code = document.getElementById('code');
+
+      if (distancia <= raio) {
+        status.style.display = 'none';
+        code.style.display = 'block';
+        // Notificação (se permitido)
+        if (Notification.permission === 'granted') {
+          new Notification("Você chegou ao destino! Código: #CODE427");
+        }
+        // Vibração
+        if (navigator.vibrate) navigator.vibrate([300, 100, 300]);
+      } else {
+        status.innerText = `📍 Distância até o destino: ${Math.round(distancia)} metros`;
+      }
+    }
+
+    function erroLocalizacao() {
+      document.getElementById('status').innerText = "❌ Não foi possível obter sua localização.";
+    }
+
+    function iniciarRastreamento() {
+      if (!navigator.geolocation) {
+        erroLocalizacao();
+        return;
+      }
+
+      navigator.geolocation.watchPosition(verificarLocalizacao, erroLocalizacao, {
+        enableHighAccuracy: true,
+        maximumAge: 0,
+        timeout: 10000
+      });
+    }
+
+    // Solicita permissão de notificação
+    if ("Notification" in window) {
+      Notification.requestPermission();
+    }
+
+    iniciarRastreamento();
+  </script>
+</body>
+</html>
