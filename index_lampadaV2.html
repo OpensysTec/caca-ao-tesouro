@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lâmpada com Logo Maior - OpenSys</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #2575FF;
+      font-family: 'Segoe UI', sans-serif;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    h1 {
+      font-size: 2.5em;
+      margin-bottom: 20px;
+      color: white;
+      text-shadow: 0 0 10px #4ade80;
+      user-select: none;
+    }
+
+    .lampada-container {
+      position: relative;
+      width: 160px;
+      height: 240px;
+      margin-bottom: 20px;
+    }
+
+    svg.lampada {
+      width: 100%;
+      height: 100%;
+      filter: brightness(0.2);
+      transition: filter 0.3s ease;
+    }
+
+    svg.lampada.acesa {
+      filter: brightness(1) drop-shadow(0 0 20px yellow);
+    }
+
+    .numero {
+      position: absolute;
+      top: 45%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 3.8em;
+      font-weight: bold;
+      color: #111;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    .numero.visivel {
+      opacity: 1;
+    }
+
+    .celular {
+      width: 300px;
+      height: 550px;
+      background: #1a1a1a;
+      border-radius: 40px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .camera {
+      width: 60px;
+      height: 8px;
+      background: #444;
+      border-radius: 5px;
+      margin-top: 12px;
+    }
+
+    .tela {
+      width: 90%;
+      flex: 1;
+      background: #0e2e66;
+      border-radius: 20px;
+      margin: 15px 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px 10px;
+      box-shadow: inset 0 0 8px #00000066;
+    }
+
+    .logo-superior {
+      margin-bottom: 40px;
+    }
+
+    .logo-superior img {
+      max-height: 140px; /* Logo maior */
+      max-width: 100%;
+      object-fit: contain;
+    }
+
+    button.botao {
+      border: none;
+      padding: 15px 35px;
+      font-size: 1.3em;
+      border-radius: 40px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      color: #000;
+    }
+
+    button.ligar {
+      background: #4ade80;
+    }
+
+    button.ligar:hover {
+      background: #22c55e;
+    }
+
+    button.desligar {
+      background: #f87171;
+    }
+
+    button.desligar:hover {
+      background: #dc2626;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Lâmpada Inteligente</h1>
+
+  <!-- Lâmpada -->
+  <div class="lampada-container">
+    <svg id="lampada" class="lampada" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+      <path fill="white" d="M32 2C18.7 2 8 12.7 8 26c0 7.4 3.6 14 9.3 18.3.5.4.7 1 .7 1.6v5.2c0 2.2 1.8 4 4 4h20c2.2 0 4-1.8 4-4v-5.2c0-.6.3-1.2.7-1.6C52.4 40 56 33.4 56 26 56 12.7 45.3 2 32 2zM26 58c0 2.2 1.8 4 4 4s4-1.8 4-4v-2h-8v2z"/>
+    </svg>
+    <div id="numero" class="numero">7</div>
+  </div>
+
+  <!-- Celular -->
+  <div class="celular">
+    <div class="camera"></div>
+    <div class="tela">
+      <div class="logo-superior">
+        <img src="logo-opensys.png" alt="Logo OpenSys" />
+      </div>
+      <button id="btnToggle" class="botao ligar" onclick="alternarLampada()">Ligar</button>
+    </div>
+  </div>
+
+  <script>
+    let ligada = false;
+    const lampada = document.getElementById("lampada");
+    const numero = document.getElementById("numero");
+    const btnToggle = document.getElementById("btnToggle");
+
+    function alternarLampada() {
+      ligada = !ligada;
+
+      if (ligada) {
+        lampada.classList.add("acesa");
+        numero.classList.add("visivel");
+        btnToggle.textContent = "Desligar";
+        btnToggle.classList.remove("ligar");
+        btnToggle.classList.add("desligar");
+      } else {
+        lampada.classList.remove("acesa");
+        numero.classList.remove("visivel");
+        btnToggle.textContent = "Ligar";
+        btnToggle.classList.remove("desligar");
+        btnToggle.classList.add("ligar");
+      }
+    }
+  </script>
+
+</body>
+</html>
