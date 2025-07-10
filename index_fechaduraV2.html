@@ -21,71 +21,63 @@
     }
 
     h1 {
-      font-size: 1.6em;
-      margin: 5px 0 15px;
+      font-size: 1.7em;
+      margin-bottom: 10px;
       text-shadow: 0 0 10px #4ade80;
       user-select: none;
-      width: 100%;
-      max-width: 360px;
-      margin-left: auto;
-      margin-right: auto;
     }
 
     .painel {
       background: #0e2e66;
       border-radius: 30px;
-      padding: 30px 20px;
-      width: 90vw;
-      max-width: 360px;
-      max-height: 500px;
+      width: 92vw;
+      max-width: 400px;
+      height: 85vh;
       box-shadow: 0 0 25px #4ade80cc;
       display: flex;
       flex-direction: column;
       align-items: center;
-      overflow: hidden;
+      padding: 5% 4%;
+      box-sizing: border-box;
     }
 
     .logo {
-      width: 100px;
-      margin-bottom: 20px;
-      object-fit: contain;
+      width: 90px;
+      margin-bottom: 15px;
     }
 
     .display {
       font-size: 1.5em;
-      letter-spacing: 3px;
+      letter-spacing: 5px;
       background: #1a1a1a;
-      padding: 15px 10px;
-      margin-bottom: 25px;
+      padding: 12px 10px;
       border-radius: 10px;
       color: #4ade80;
       width: 100%;
-      min-height: 80px;
-      text-align: center;
+      min-height: 70px;
+      margin-bottom: 20px;
       box-shadow: inset 0 0 10px #22c55e99;
-      user-select: none;
-      white-space: pre-wrap;
       display: flex;
-      flex-direction: column;
       justify-content: center;
       align-items: center;
+      white-space: pre-wrap;
     }
 
     .teclado {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 15px;
+      gap: 12px;
       width: 100%;
-      margin-bottom: 20px;
+      flex: 1;
     }
 
     .tecla {
-      width: 70px;
-      height: 70px;
+      width: 100%;
+      aspect-ratio: 1 / 1;
       background: #1a1a1a;
       border: 2px solid #4ade80;
       border-radius: 50%;
-      font-size: 1.5em;
+      font-size: 1.4em;
       color: #4ade80;
       cursor: pointer;
       box-shadow: 0 0 10px #4ade8099;
@@ -107,37 +99,6 @@
       border-color: #4ade80;
       color: black;
     }
-
-    @media (max-width: 400px) {
-      .painel {
-        max-width: 320px;
-        max-height: 460px;
-        padding: 25px 15px;
-      }
-
-      .tecla {
-        width: 60px;
-        height: 60px;
-        font-size: 1.3em;
-      }
-
-      .display {
-        font-size: 1.3em;
-        letter-spacing: 2px;
-        margin-bottom: 20px;
-        min-height: 70px;
-      }
-
-      h1 {
-        font-size: 1.4em;
-        margin-bottom: 12px;
-      }
-
-      .logo {
-        width: 85px;
-        margin-bottom: 15px;
-      }
-    }
   </style>
 </head>
 <body>
@@ -145,7 +106,7 @@
   <h1>Fechadura Inteligente</h1>
 
   <div class="painel">
-    <img src="logo-opensys.png" alt="OpenSys Logo" class="logo" />
+    <img src="logo-opensys.png" alt="Logo OpenSys" class="logo" />
     <div class="display" id="display">____</div>
 
     <div class="teclado">
@@ -209,11 +170,7 @@
           atualizarDisplay();
         } else if (valor === "OK") {
           if (senhaDigitada.length === 4) {
-            if (senhaDigitada === senhaCorreta) {
-              sucesso();
-            } else {
-              erro();
-            }
+            senhaDigitada === senhaCorreta ? sucesso() : erro();
           } else {
             erro();
           }
