@@ -5,70 +5,70 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Fechadura Inteligente - OpenSys</title>
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     html, body {
       margin: 0;
       padding: 0;
-      background: #2575FF;
-      font-family: 'Segoe UI', sans-serif;
       height: 100dvh;
-      overflow: hidden;
+      font-family: 'Segoe UI', sans-serif;
+      background: #2575FF;
+      color: white;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      color: white;
-      text-align: center;
+      overflow: hidden;
     }
 
     h1 {
-      font-size: 1.7em;
-      margin-bottom: 10px;
+      font-size: 4vw;
+      margin: 0 0 2vh;
       text-shadow: 0 0 10px #4ade80;
-      user-select: none;
     }
 
     .painel {
       background: #0e2e66;
       border-radius: 30px;
-      width: 92vw;
+      width: 90vw;
       max-width: 400px;
-      height: 85vh;
-      box-shadow: 0 0 25px #4ade80cc;
+      height: 78vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 5% 4%;
-      box-sizing: border-box;
+      padding: 2vh 3vw;
+      box-shadow: 0 0 25px #4ade80cc;
     }
 
     .logo {
-      width: 90px;
-      margin-bottom: 15px;
+      width: 22vw;
+      max-width: 100px;
+      margin-bottom: 2vh;
     }
 
     .display {
-      font-size: 1.5em;
-      letter-spacing: 5px;
+      font-size: 1.4em;
+      letter-spacing: 6px;
       background: #1a1a1a;
-      padding: 12px 10px;
+      padding: 10px;
+      margin-bottom: 3vh;
       border-radius: 10px;
       color: #4ade80;
       width: 100%;
-      min-height: 70px;
-      margin-bottom: 20px;
+      min-height: 55px;
       box-shadow: inset 0 0 10px #22c55e99;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      text-align: center;
       white-space: pre-wrap;
     }
 
     .teclado {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
+      gap: 10px;
       width: 100%;
-      flex: 1;
+      flex-grow: 1;
     }
 
     .tecla {
@@ -77,15 +77,14 @@
       background: #1a1a1a;
       border: 2px solid #4ade80;
       border-radius: 50%;
-      font-size: 1.4em;
+      font-size: 1.2em;
       color: #4ade80;
       cursor: pointer;
       box-shadow: 0 0 10px #4ade8099;
-      transition: background 0.2s, box-shadow 0.2s, color 0.2s;
+      transition: 0.2s;
       display: flex;
       justify-content: center;
       align-items: center;
-      user-select: none;
     }
 
     .tecla:hover {
@@ -96,8 +95,25 @@
 
     .tecla.ok {
       background: #4ade80;
-      border-color: #4ade80;
       color: black;
+    }
+
+    @media (min-width: 768px) {
+      h1 {
+        font-size: 2em;
+      }
+
+      .painel {
+        height: 70vh;
+      }
+
+      .display {
+        font-size: 1.6em;
+      }
+
+      .tecla {
+        font-size: 1.5em;
+      }
     }
   </style>
 </head>
@@ -126,7 +142,7 @@
   </div>
 
   <script>
-    const senhaCodificada = "NDI3MQ=="; // senha 4271 base64
+    const senhaCodificada = "NDI3MQ=="; // senha 4271
     const senhaCorreta = atob(senhaCodificada);
     let senhaDigitada = "";
 
@@ -143,9 +159,7 @@
     function sucesso() {
       const agora = new Date();
       const dataHora = `${agora.toLocaleDateString()} - ${agora.toLocaleTimeString()}`;
-      const msg = `✅ Acesso Liberado!\n${dataHora}`;
-      atualizarDisplay(msg);
-
+      atualizarDisplay(`✅ Acesso Liberado!\n${dataHora}`);
       setTimeout(() => {
         senhaDigitada = "";
         atualizarDisplay();
@@ -154,7 +168,6 @@
 
     function erro() {
       atualizarDisplay("❌ Senha incorreta.");
-
       setTimeout(() => {
         senhaDigitada = "";
         atualizarDisplay();
