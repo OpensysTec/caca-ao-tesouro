@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cortina Inteligente - OpenSys</title>
+  <style>
+    html, body {
+      margin: 0; padding: 0;
+      background: #2575FF;
+      font-family: 'Segoe UI', sans-serif;
+      height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    h1 {
+      color: white;
+      font-size: 1.6em;
+      margin-bottom: 20px;
+      text-shadow: 0 0 10px #4ade80;
+      user-select: none;
+    }
+
+    .janela-container {
+      position: relative;
+      width: 320px;
+      height: 320px;
+      background: #85b7ff;
+      border: 12px solid #555a;
+      border-radius: 20px;
+      box-shadow:
+        inset 0 0 15px #aacdff,
+        0 5px 20px rgba(0,0,0,0.5);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 10px;
+      padding: 15px;
+      box-sizing: border-box;
+      user-select: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .janela-container::before,
+    .janela-container::after {
+      content: "";
+      position: absolute;
+      background: #555a;
+      z-index: 1;
+      border-radius: 3px;
+    }
+    .janela-container::before {
+      width: 12px;
+      height: 100%;
+      top: 0;
+      left: calc(50% - 6px);
+    }
+    .janela-container::after {
+      height: 12px;
+      width: 100%;
+      top: calc(50% - 6px);
+      left: 0;
+    }
+
+    .vidro {
+      background: linear-gradient(135deg, #c8e4ff, #a0d4ff);
+      border-radius: 12px;
+      box-shadow: inset 0 0 15px #b7d9ff;
+      position: relative;
+      z-index: 0;
+    }
+
+    /* Número inicialmente oculto */
+    .numero-central {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 96px;
+      font-weight: bold;
+      color: black;
+      z-index: 10;
+      user-select: none;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.7s ease;
+    }
+
+    /* Número visível quando cortinas abertas */
+    .aberto .numero-central {
+      opacity: 1;
+    }
+
+    .sol {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      width: 60px;
+      height: 60px;
+      background: radial-gradient(circle, #fff700, #ffcc00);
+      border-radius: 50%;
+      box-shadow: 0 0 40px #ffdd33;
+      z-index: 5;
+      pointer-events: none;
+    }
+
+    .cortina {
+      position: absolute;
+      top: 0;
+      width: 50%;
+      height: 100%;
+      background: repeating-linear-gradient(
+        90deg,
+        #d9b5b5,
+        #d9b5b5 8px,
+        #c49494 8px,
+        #c49494 14px
+      );
+      box-shadow:
+        inset 3px 0 6px #b28080,
+        inset -3px 0 6px #e0a0a0;
+      border-radius: 0 0 15px 15px;
+      transition: transform 1s ease;
+      z-index: 6;
+      background-size: 14px 100%;
+    }
+
+    .cortina-esquerda {
+      left: 0;
+      border-top-left-radius: 20px;
+      border-bottom-left-radius: 20px;
+      clip-path: polygon(0 0, 100% 2%, 100% 98%, 0% 100%);
+      transform: translateX(0);
+    }
+
+    .cortina-direita {
+      right: 0;
+      border-top-right-radius: 20px;
+      border-bottom-right-radius: 20px;
+      clip-path: polygon(0 2%, 100% 0%, 100% 100%, 0% 98%);
+      transform: translateX(0);
+    }
+
+    .aberto .cortina-esquerda {
+      transform: translateX(-100%);
+    }
+
+    .aberto .cortina-direita {
+      transform: translateX(100%);
+    }
+
+    .celular {
+      width: 85vw;
+      max-width: 320px;
+      aspect-ratio: 9 / 18;
+      background: #1a1a1a;
+      border-radius: 40px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow: hidden;
+      margin-top: 30px;
+    }
+
+    .camera {
+      width: 60px;
+      height: 8px;
+      background: #444;
+      border-radius: 5px;
+      margin-top: 10px;
+    }
+
+    .tela {
+      width: 90%;
+      flex: 1;
+      background: #0e2e66;
+      border-radius: 20px;
+      margin: 10px 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 15px;
+      box-shadow: inset 0 0 8px #00000066;
+    }
+
+    .logo-superior {
+      margin-bottom: 20px;
+    }
+
+    .logo-superior img {
+      max-height: 90px;
+      max-width: 100%;
+      object-fit: contain;
+    }
+
+    button.botao {
+      border: none;
+      padding: 10px 20px;
+      font-size: 1em;
+      border-radius: 40px;
+      cursor: pointer;
+      margin: 5px;
+      user-select: none;
+    }
+
+    .abrir { background: #4ade80; }
+    .fechar { background: #f87171; }
+  </style>
+</head>
+<body>
+  <h1>Cortina Inteligente</h1>
+
+  <div id="janela" class="janela-container">
+    <div class="vidro"></div>
+    <div class="vidro"></div>
+    <div class="vidro"></div>
+    <div class="vidro"></div>
+
+    <div class="numero-central">5</div>
+    <div class="sol"></div>
+
+    <div class="cortina cortina-esquerda"></div>
+    <div class="cortina cortina-direita"></div>
+  </div>
+
+  <div class="celular">
+    <div class="camera"></div>
+    <div class="tela">
+      <div class="logo-superior">
+        <img src="logo-opensys.png" alt="Logo OpenSys" />
+      </div>
+      <button class="botao abrir" onclick="abrirCortina()">Abrir</button>
+      <button class="botao fechar" onclick="fecharCortina()">Fechar</button>
+    </div>
+  </div>
+
+  <script>
+    const janela = document.getElementById('janela');
+
+    function abrirCortina() {
+      janela.classList.add('aberto');
+    }
+    function fecharCortina() {
+      janela.classList.remove('aberto');
+    }
+  </script>
+</body>
+</html>
