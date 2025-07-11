@@ -155,9 +155,11 @@
       border-radius: 40px;
       cursor: pointer;
       margin: 5px;
+      transition: background 0.3s ease;
     }
 
     .ligar { background: #4ade80; }
+    .desligar { background: #f87171; }
     .canal { background: #60a5fa; }
     .volume { background: #facc15; }
   </style>
@@ -185,7 +187,7 @@
       <div class="logo-superior">
         <img src="logo-opensys.png" alt="Logo OpenSys" />
       </div>
-      <button class="botao ligar" onclick="ligarTv()">Ligar</button>
+      <button id="btnTvToggle" class="botao ligar" onclick="ligarTv()">Ligar</button>
       <button class="botao canal" onclick="mudarCanal()">Mudar Canal</button>
       <button class="botao volume" onclick="ajustarVolume(10)">Volume +</button>
       <button class="botao volume" onclick="ajustarVolume(-10)">Volume -</button>
@@ -198,18 +200,24 @@
     const maxVolume = 100;
 
     function ligarTv() {
+      tvLigada = !tvLigada;
       const powerLed = document.getElementById('powerLed');
       const numero = document.getElementById('tvNumero');
-
-      tvLigada = !tvLigada;
+      const botao = document.getElementById('btnTvToggle');
 
       if (tvLigada) {
         powerLed.style.background = 'limegreen';
         numero.classList.add('visivel');
+        botao.textContent = 'Desligar';
+        botao.classList.remove('ligar');
+        botao.classList.add('desligar');
       } else {
         powerLed.style.background = 'red';
         numero.classList.remove('visivel');
         document.getElementById('volumeBar').style.width = '0';
+        botao.textContent = 'Ligar';
+        botao.classList.remove('desligar');
+        botao.classList.add('ligar');
       }
     }
 
@@ -226,6 +234,5 @@
       document.getElementById('volumeBar').style.width = volume + 'px';
     }
   </script>
-
 </body>
 </html>
