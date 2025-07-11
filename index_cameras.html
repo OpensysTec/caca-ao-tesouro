@@ -6,8 +6,7 @@
   <title>Câmeras de Segurança - OpenSys</title>
   <style>
     html, body {
-      margin: 0;
-      padding: 0;
+      margin: 0; padding: 0;
       background: #2575FF;
       font-family: 'Segoe UI', sans-serif;
       height: 100dvh;
@@ -15,39 +14,27 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: flex-start;
+      justify-content: center;
     }
-
-    h1 {
-      font-size: 1.6em;
-      margin: 20px 0;
+    .titulo-celular {
+      font-size: 1.1em;
       color: white;
-      text-shadow: 0 0 10px #4ade80;
-      user-select: none;
       text-align: center;
-      width: 100%;
+      margin: 0 0 10px;
+      text-shadow: 0 0 8px #4ade80;
+      user-select: none;
     }
-
     .camera-container {
       display: flex;
       justify-content: center;
       gap: 80px;
       margin-bottom: 40px;
     }
-
     .camera-wrapper {
       display: flex;
       flex-direction: column;
       align-items: center;
-      animation: moveCamera 3s infinite alternate ease-in-out;
     }
-
-    @keyframes moveCamera {
-      0% { transform: rotate(-10deg) translateY(0); }
-      50% { transform: rotate(10deg) translateY(-5px); }
-      100% { transform: rotate(-5deg) translateY(5px); }
-    }
-
     .support {
       width: 20px;
       height: 40px;
@@ -55,7 +42,6 @@
       border-radius: 4px;
       margin-top: -10px;
     }
-
     .camera {
       width: 90px;
       height: 60px;
@@ -63,8 +49,13 @@
       border-radius: 8px;
       position: relative;
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+      transform: rotate(-10deg);
+      animation: movimentoCamera1 6s infinite alternate ease-in-out;
     }
-
+    .camera-wrapper:nth-child(2) .camera {
+      transform: rotate(10deg);
+      animation: movimentoCamera2 7s infinite alternate ease-in-out;
+    }
     .camera::before {
       content: '';
       position: absolute;
@@ -77,7 +68,6 @@
       border-radius: 50%;
       box-shadow: inset 0 0 5px #000;
     }
-
     .camera::after {
       content: '';
       position: absolute;
@@ -90,7 +80,6 @@
       border-radius: 50%;
       box-shadow: 0 0 3px #000;
     }
-
     .led {
       position: absolute;
       top: 6px;
@@ -101,15 +90,23 @@
       border-radius: 50%;
       animation: piscar 1s infinite;
     }
-
     @keyframes piscar {
       0%, 100% { opacity: 1; }
       50% { opacity: 0; }
     }
-
+    @keyframes movimentoCamera1 {
+      0% { transform: rotate(-10deg) translateX(0) translateY(0); }
+      50% { transform: rotate(-15deg) translateX(-5px) translateY(-3px); }
+      100% { transform: rotate(-10deg) translateX(0) translateY(0); }
+    }
+    @keyframes movimentoCamera2 {
+      0% { transform: rotate(10deg) translateX(0) translateY(0); }
+      50% { transform: rotate(15deg) translateX(5px) translateY(3px); }
+      100% { transform: rotate(10deg) translateX(0) translateY(0); }
+    }
     .celular {
       width: 85vw;
-      max-width: 300px;
+      max-width: 320px;
       aspect-ratio: 9 / 18;
       background: #1a1a1a;
       border-radius: 40px;
@@ -119,7 +116,6 @@
       align-items: center;
       overflow: hidden;
     }
-
     .camera-lente {
       width: 60px;
       height: 8px;
@@ -127,7 +123,6 @@
       border-radius: 5px;
       margin-top: 10px;
     }
-
     .tela {
       width: 90%;
       flex: 1;
@@ -140,24 +135,23 @@
       padding: 15px;
       box-shadow: inset 0 0 8px #00000066;
       transition: all 0.3s ease;
+      overflow: hidden;
+      position: relative;
     }
-
     .logo-superior {
       margin-bottom: 20px;
     }
-
     .logo-superior img {
       max-height: 90px;
       max-width: 100%;
       object-fit: contain;
     }
-
     .botoes {
       display: flex;
       flex-direction: column;
       align-items: center;
+      width: 100%;
     }
-
     button.botao {
       border: none;
       padding: 10px 20px;
@@ -167,15 +161,14 @@
       background: #4ade80;
       color: black;
       margin-bottom: 10px;
+      width: 100%;
     }
-
     .camera-preview {
       display: none;
       flex-direction: column;
-      gap: 10px;
+      gap: 15px;
       width: 100%;
     }
-
     .preview-box {
       background: #000;
       border: 2px solid #fff;
@@ -183,38 +176,50 @@
       height: 100px;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      padding: 5px 10px;
-      color: red;
-      font-weight: bold;
-      font-size: 1.1em;
+      justify-content: center;
       position: relative;
       overflow: hidden;
+      color: white;
+      font-weight: bold;
+      font-size: 2em;
+      user-select: none;
     }
-
-    .preview-box::after {
-      content: '';
+    .preview-box .rec-label {
       position: absolute;
-      width: 200%;
-      height: 100%;
-      background: repeating-linear-gradient(45deg, rgba(255,255,255,0.03), rgba(255,255,255,0.03) 2px, transparent 2px, transparent 4px);
+      top: 6px;
+      left: 6px;
+      font-size: 0.7em;
+      color: #ff4c4c;
+      font-weight: bold;
+      user-select: none;
+      z-index: 2;
+    }
+    .preview-box.rec2 {
+      font-size: 1.2em;
+      color: white;
+      font-weight: normal;
+      justify-content: flex-start;
+    }
+    .animacao-paisagem {
+      position: absolute;
       top: 0;
       left: 0;
-      animation: grava 2s linear infinite;
-    }
-
-    @keyframes grava {
-      0% { transform: translateX(-100%); }
-      100% { transform: translateX(100%); }
-    }
-
-    .preview-box span {
+      height: 100%;
+      width: 200%;
+      background-image: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80');
+      background-repeat: repeat-x;
+      background-size: cover;
+      animation: moverPaisagem 10s linear infinite;
       z-index: 1;
+      border-radius: 6px;
+    }
+    @keyframes moverPaisagem {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
     }
   </style>
 </head>
 <body>
-  <h1>Sistema de Câmeras Inteligentes</h1>
 
   <div class="camera-container">
     <div class="camera-wrapper">
@@ -234,14 +239,21 @@
   <div class="celular">
     <div class="camera-lente"></div>
     <div class="tela">
+      <h1 class="titulo-celular">Sistema de Câmeras Inteligentes</h1>
       <div class="logo-superior">
         <img src="logo-opensys.png" alt="Logo OpenSys" />
       </div>
       <div class="botoes">
         <button class="botao" onclick="mostrarCameras()">Câmeras</button>
         <div class="camera-preview" id="cameraPreview">
-          <div class="preview-box"><span>REC: 0</span></div>
-          <div class="preview-box"><span>REC:</span></div>
+          <div class="preview-box rec1">
+            <div class="rec-label">REC:</div>
+            <div class="numero-zero">0</div>
+          </div>
+          <div class="preview-box rec2">
+            <div class="rec-label">REC:</div>
+            <div class="animacao-paisagem"></div>
+          </div>
         </div>
       </div>
     </div>
