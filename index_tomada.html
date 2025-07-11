@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tomada Inteligente - OpenSys</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #2575FF;
+      font-family: 'Segoe UI', sans-serif;
+      height: 100dvh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    h1 {
+      font-size: 1.6em;
+      margin: 5px 0 20px;
+      color: white;
+      text-shadow: 0 0 10px #4ade80;
+      user-select: none;
+    }
+
+    .cenario {
+      display: flex;
+      align-items: flex-end;
+      gap: 0px;
+      margin-bottom: 30px;
+    }
+
+    .tomada {
+      width: 60px;
+      height: 100px;
+      background: #ccc;
+      border-radius: 10px;
+      box-shadow: inset 0 0 8px #666;
+      position: relative;
+    }
+
+    .tomada::before, .tomada::after {
+      content: '';
+      position: absolute;
+      width: 8px;
+      height: 20px;
+      background: #222;
+      border-radius: 50%;
+      left: 26px;
+    }
+
+    .tomada::before {
+      top: 25px;
+    }
+
+    .tomada::after {
+      top: 55px;
+    }
+
+    .led-tomada {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: red;
+      box-shadow: 0 0 6px red;
+      transition: background 0.3s, box-shadow 0.3s;
+    }
+
+    .led-tomada.ligado {
+      background: lime;
+      box-shadow: 0 0 10px lime;
+    }
+
+    .fio {
+      width: 30px;
+      height: 10px;
+      background: #222;
+      border-radius: 5px;
+      z-index: 1;
+    }
+
+    .cafeteira {
+      width: 120px;
+      height: 170px;
+      background: #3e3e3e;
+      border-radius: 8px;
+      position: relative;
+      box-shadow: inset 0 0 10px #222;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      padding-bottom: 10px;
+    }
+
+    .cafeteira::before {
+      content: 'CAFETEIRA';
+      position: absolute;
+      top: 5px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.8em;
+      color: white;
+      font-weight: bold;
+    }
+
+    .visor {
+      width: 70px;
+      height: 40px;
+      background: #111;
+      border-radius: 4px;
+      margin-top: 30px;
+      text-align: center;
+      font-size: 1.8em;
+      color: #000;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 1;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .visor span {
+      display: none;
+    }
+
+    .cafeteira.ligando .visor {
+      background: #0a0;
+      color: #000;
+    }
+
+    .cafeteira.ligando .visor span {
+      display: block;
+    }
+
+    .botoes {
+      display: flex;
+      gap: 4px;
+      margin-top: 5px;
+    }
+
+    .botao-cafe {
+      width: 12px;
+      height: 12px;
+      background: #666;
+      border-radius: 50%;
+    }
+
+    .led-cafeteira {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 10px;
+      height: 10px;
+      background: red;
+      border-radius: 50%;
+      box-shadow: 0 0 6px red;
+      transition: background 0.3s, box-shadow 0.3s;
+    }
+
+    .led-cafeteira.ligado {
+      background: lime;
+      box-shadow: 0 0 10px lime;
+    }
+
+    .jarra {
+      width: 60px;
+      height: 65px;
+      background: #888;
+      border-radius: 8px 8px 4px 4px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cafe {
+      width: 100%;
+      height: 0;
+      background: #3b2008;
+      position: absolute;
+      bottom: 0;
+      transition: height 2s ease;
+    }
+
+    .cafeteira.ligando .cafe {
+      height: 100%;
+    }
+
+    .vapor {
+      position: absolute;
+      top: -20px;
+      width: 10px;
+      height: 20px;
+      background: radial-gradient(ellipse, rgba(255,255,255,0.6), transparent);
+      border-radius: 50%;
+      animation: subir 2s infinite ease-in-out;
+      opacity: 0;
+    }
+
+    .cafeteira.ligando .vapor {
+      opacity: 1;
+    }
+
+    @keyframes subir {
+      0% { transform: translateY(0) scale(1); opacity: 0.6; }
+      100% { transform: translateY(-30px) scale(1.2); opacity: 0; }
+    }
+
+    .celular {
+      width: 85vw;
+      max-width: 300px;
+      aspect-ratio: 9 / 18;
+      background: #1a1a1a;
+      border-radius: 40px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .camera {
+      width: 60px;
+      height: 8px;
+      background: #444;
+      border-radius: 5px;
+      margin-top: 10px;
+    }
+
+    .tela {
+      width: 90%;
+      flex: 1;
+      background: #0e2e66;
+      border-radius: 20px;
+      margin: 10px 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 15px;
+      box-shadow: inset 0 0 8px #00000066;
+    }
+
+    .logo-superior {
+      margin-bottom: 20px;
+    }
+
+    .logo-superior img {
+      max-height: 90px;
+      max-width: 100%;
+      object-fit: contain;
+    }
+
+    button.botao {
+      border: none;
+      padding: 10px 20px;
+      font-size: 1em;
+      border-radius: 40px;
+      cursor: pointer;
+      margin: 5px;
+    }
+
+    .ligar { background: #4ade80; }
+    .desligar { background: #f87171; }
+  </style>
+</head>
+<body>
+  <h1>Tomada Inteligente</h1>
+
+  <div class="cenario">
+    <div class="tomada">
+      <div id="ledTomada" class="led-tomada"></div>
+    </div>
+    <div class="fio"></div>
+    <div id="cafeteira" class="cafeteira">
+      <div id="ledCafe" class="led-cafeteira"></div>
+      <div class="visor"><span>7</span></div>
+      <div class="botoes">
+        <div class="botao-cafe"></div>
+        <div class="botao-cafe"></div>
+      </div>
+      <div class="vapor"></div>
+      <div class="jarra">
+        <div class="cafe"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="celular">
+    <div class="camera"></div>
+    <div class="tela">
+      <div class="logo-superior">
+        <img src="logo-opensys.png" alt="Logo OpenSys" />
+      </div>
+      <button class="botao ligar" onclick="ligarTomada()">Ligar</button>
+      <button class="botao desligar" onclick="desligarTomada()">Desligar</button>
+    </div>
+  </div>
+
+  <script>
+    const ledTomada = document.getElementById('ledTomada');
+    const ledCafe = document.getElementById('ledCafe');
+    const cafeteira = document.getElementById('cafeteira');
+
+    function ligarTomada() {
+      ledTomada.classList.add('ligado');
+      ledCafe.classList.add('ligado');
+      cafeteira.classList.add('ligando');
+    }
+
+    function desligarTomada() {
+      ledTomada.classList.remove('ligado');
+      ledCafe.classList.remove('ligado');
+      cafeteira.classList.remove('ligando');
+    }
+  </script>
+</body>
+</html>
