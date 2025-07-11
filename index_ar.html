@@ -183,6 +183,7 @@
       border-radius: 40px;
       cursor: pointer;
       margin: 5px;
+      transition: background 0.3s ease;
     }
 
     .ligar { background: #4ade80; }
@@ -214,7 +215,7 @@
       <div class="logo-superior">
         <img src="logo-opensys.png" alt="Logo OpenSys" />
       </div>
-      <button class="botao ligar" onclick="ligarAr()">Ligar</button>
+      <button id="btnToggle" class="botao ligar" onclick="ligarAr()">Ligar</button>
       <button class="botao aumentar" onclick="ajustarTemp(1)">Aumentar Temp</button>
       <button class="botao diminuir" onclick="ajustarTemp(-1)">Diminuir Temp</button>
     </div>
@@ -230,17 +231,26 @@
       const ondas = document.getElementById('ondas');
       const powerLed = document.getElementById('powerLed');
       const numero = document.getElementById('numeroDisplay');
+      const botao = document.getElementById('btnToggle');
 
       if (ligado) {
         display.style.opacity = 1;
         ondas.style.opacity = 1;
         powerLed.style.background = 'limegreen';
         numero.classList.add('visivel');
+
+        botao.textContent = 'Desligar';
+        botao.classList.remove('ligar');
+        botao.classList.add('desligar');
       } else {
         display.style.opacity = 0;
         ondas.style.opacity = 0;
         powerLed.style.background = 'red';
         numero.classList.remove('visivel');
+
+        botao.textContent = 'Ligar';
+        botao.classList.remove('desligar');
+        botao.classList.add('ligar');
       }
     }
 
