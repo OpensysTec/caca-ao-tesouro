@@ -135,7 +135,7 @@
     <h1>Fechadura Inteligente</h1>
     <div class="painel">
       <img src="logo-opensys.png" alt="Logo OpenSys" class="logo">
-      <div class="display" id="display">____</div>
+      <div class="display" id="display">______</div>
 
       <div class="teclado">
         <button class="tecla">1</button>
@@ -155,7 +155,7 @@
   </div>
 
   <script>
-    const senhaCodificada = "NDI3MQ=="; // senha 4271
+    const senhaCodificada = "MjEwNDIw"; // senha 210420 base64
     const senhaCorreta = atob(senhaCodificada);
     let senhaDigitada = "";
 
@@ -165,7 +165,7 @@
       if (mensagem) {
         display.innerText = mensagem;
       } else {
-        display.innerText = senhaDigitada.padEnd(4, "_");
+        display.innerText = senhaDigitada.padEnd(6, "_");
       }
     }
 
@@ -195,13 +195,13 @@
           senhaDigitada = senhaDigitada.slice(0, -1);
           atualizarDisplay();
         } else if (valor === "OK") {
-          if (senhaDigitada.length === 4) {
+          if (senhaDigitada.length === 6) {
             senhaDigitada === senhaCorreta ? sucesso() : erro();
           } else {
             erro();
           }
         } else {
-          if (senhaDigitada.length < 4) {
+          if (senhaDigitada.length < 6) {
             senhaDigitada += valor;
             atualizarDisplay();
           }
